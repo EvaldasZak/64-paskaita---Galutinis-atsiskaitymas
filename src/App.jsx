@@ -14,6 +14,7 @@ import Home from './components/pages/Home';
 import Header from './components/organisms/Header';
 import Profile from './components/pages/Profile';
 import Add from './components/pages/Add';
+import Question from './components/pages/Question';
 
 
 // Styled component
@@ -39,6 +40,7 @@ const App = () => {
             </ProtectedRoute>
           }
           />
+          <Route path="/question/:id" element={<Question />} />
 
           {!currentUser ? (
             <>
