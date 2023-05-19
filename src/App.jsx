@@ -20,12 +20,12 @@ const AppContainer = styled.div`
 `;
 
 const App = () => {
-  const { currentUser } = useContext(UsersContext);
+  const { currentUser, logout } = useContext(UsersContext);
 
   return (
     <>
       <AppContainer>
-        <Header user={currentUser} />
+        <Header user={currentUser} logout={logout} />
         <Routes>
           <Route index element={<Home />} />
           {
