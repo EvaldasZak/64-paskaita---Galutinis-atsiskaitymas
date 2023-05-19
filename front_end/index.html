@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internetinis forumas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Internetinis forumas</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Klausimų sąrašas</a></li>
+          <li><a href="ask.html">Užduoti klausimą</a></li>
+          <li><a href="login.html">Prisijungti</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Klausimų sąrašas -->
+      <section id="question-list">
+        <h2>Klausimai</h2>
+
+        <div id="question-filter">
+          <label for="answered-filter">Atsakyti:</label>
+          <div class="select-wrapper">
+            <select name="answered-filter" id="answered-filter">
+              <option value="all">Visi</option>
+              <option value="answered">Atsakyti</option>
+              <option value="unanswered">Neatsakyti</option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+        <div id="question-sort">
+          <label for="sort-by">Rikiuoti pagal:</label>
+          <div class="select-wrapper">
+            <select name="sort-by" id="sort-by">
+              <option value="date-desc">Data (mažėjimo tvarka)</option>
+              <option value="date-asc">Data (didėjimo tvarka)</option>
+              <option value="answers-desc">
+                Atsakymų skaičius (mažėjimo tvarka)
+              </option>
+              <option value="answers-asc">
+                Atsakymų skaičius (didėjimo tvarka)
+              </option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+
+        <ul id="question-list-items">
+          <li>
+            <div class="question">
+              <div class="vote-component">
+                <div class="question-vote">
+                  <div class="vote-arrows">
+                    <span class="up-arrow">▲</span>
+                    <span class="down-arrow">▼</span>
+                  </div>
+                  <span class="vote-count">1</span>
+                </div>
+              </div>
+              <div class="question-details">
+                <h3>
+                  <a href="question.html">JavaScript function not working</a>
+                </h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam gravida auctor aliquet. Integer sodales convallis
+                  tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.
+                </p>
+                <p class="author">Author: JohnDoe123</p>
+                <p class="date">Date: May 15, 2023</p>
+                <p class="answers">Answers: 3</p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="question">
+              <div class="vote-component">
+                <div class="question-vote">
+                  <div class="vote-arrows">
+                    <span class="up-arrow">▲</span>
+                    <span class="down-arrow">▼</span>
+                  </div>
+                  <span class="vote-count">0</span>
+                </div>
+              </div>
+              <div class="question-details">
+                <h3>
+                  <a href="question.html">Python package installation issue</a>
+                </h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam gravida auctor aliquet. Integer sodales convallis
+                  tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.
+                </p>
+                <p class="author">Author: JaneSmith</p>
+                <p class="date">Date: May 14, 2023</p>
+                <p class="answers">Answers: 2</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>
