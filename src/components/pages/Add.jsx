@@ -1,9 +1,13 @@
 import React, { useContext, useState } from 'react';
-import QuestionsContext from '../../context/QuestionsContext';
 import { useNavigate } from 'react-router-dom';
+
+import QuestionsContext from '../../context/QuestionsContext';
+import UsersContext from '../../context/UsersContext';
 
 const Add = () => {
     const { questions, setQuestions, QUESTIONS_ACTION_TYPE, } = useContext(QuestionsContext);
+    const { currentUser } = useContext(UsersContext)
+
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -29,7 +33,8 @@ const Add = () => {
         const newQuestions = {
             id: questions[questions.length - 1].id + 1,
             title,
-            body
+            body,
+            user_id: currentUser.id
         }
 
         setQuestions({
