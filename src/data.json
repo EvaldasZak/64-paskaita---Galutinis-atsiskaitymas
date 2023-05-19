@@ -14,5 +14,17 @@
       "password": "labas123",
       "avatar": "https://picsum.photos/400/300"
     }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "title": "JavaScript function not working",
+      "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus."
+    },
+    {
+      "id": 2,
+      "title": "Python package installation issue",
+      "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus."      
+    }
   ]
 }
