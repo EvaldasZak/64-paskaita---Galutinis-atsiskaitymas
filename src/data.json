@@ -24,28 +24,46 @@
   ],
   "questions": [
     {
-      "id": 1,
-      "title": "JavaScript function not working",
+      "title": "its",
       "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
-      "user_id": 1
+      "user_id": 1,
+      "edited": false,
+      "id": 1
     },
     {
       "id": 2,
       "title": "Python package installation issue",
       "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
-      "user_id": 2
+      "user_id": 2,
+      "edited": true
     },
     {
       "id": 3,
       "title": "IT enquiry",
       "body": "Answer test",
-      "user_id": 1
+      "user_id": 1,
+      "edited": false
     },
     {
       "id": 4,
       "title": "LOL",
       "body": "How to win at lol",
-      "user_id": 3
+      "user_id": 3,
+      "edited": false
+    },
+    {
+      "title": "vaclovad",
+      "body": "yeso",
+      "user_id": 1,
+      "edited": true,
+      "id": 5
+    },
+    {
+      "title": "test",
+      "body": "testing if it works, test of edit",
+      "user_id": 1,
+      "edited": true,
+      "id": 6
     }
   ]
 }

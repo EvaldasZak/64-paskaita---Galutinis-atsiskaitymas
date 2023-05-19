@@ -34,7 +34,8 @@ const Add = () => {
             id: questions[questions.length - 1].id + 1,
             title,
             body,
-            user_id: currentUser.id
+            user_id: currentUser.id,
+            edited: false
         }
 
         setQuestions({
