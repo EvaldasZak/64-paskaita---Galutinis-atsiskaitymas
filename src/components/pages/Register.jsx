@@ -59,9 +59,15 @@ const Register = () => {
   const { users, setUsers, setCurrentUser, USERS_ACTION_TYPE } = useContext(UsersContext)
   const navigate = useNavigate();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [avatar, setAvatar] = useState('');
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -74,9 +80,18 @@ const Register = () => {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
+  
+  const handleAvatarChange = (e) => {
+    setAvatar(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (name.length < 1) {
+      alert('Fill in name');
+      return;
+    }
 
     if (email.length < 3) {
       alert('Fill in email address');
@@ -94,10 +109,17 @@ const Register = () => {
       return;
     }
 
+    if (avatar.length < 1) {
+      alert('Fill in avatar url');
+      return;
+    }
+
     const newUser = {
       id: users[users.length - 1].id + 1,
+      name,
       email,
-      password
+      password,
+      avatar
     }
     
     if (newUser.email !== users.find(user => user.email === email)?.email) {
@@ -119,6 +141,10 @@ const Register = () => {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
+          <label>Name:</label>
+          <input type="text" value={name} onChange={handleNameChange} />
+        </div>
+        <div>
           <label>Email:</label>
           <input type="text" value={email} onChange={handleEmailChange} />
         </div>
@@ -129,6 +155,10 @@ const Register = () => {
         <div>
           <label>Confirm Password:</label>
           <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
+        </div>
+        <div>
+          <label>Avatar URL:</label>
+          <input type="text" value={avatar} onChange={handleAvatarChange} />
         </div>
         <button type="submit">Register</button>
       </form>

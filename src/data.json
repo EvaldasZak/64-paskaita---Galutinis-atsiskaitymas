@@ -3,12 +3,16 @@
     {
       "id": 1,
       "email": "u@u.com",
-      "password": "password"
+      "name": "First User",
+      "password": "password",
+      "avatar": "https://picsum.photos/200/300"
     },
     {
       "id": 2,
       "email": "try@try.com",
-      "password": "labas123"
+      "name": "Test User",
+      "password": "labas123",
+      "avatar": "https://picsum.photos/400/300"
     }
   ]
 }
