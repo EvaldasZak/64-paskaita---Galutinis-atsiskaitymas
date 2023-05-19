@@ -9,6 +9,8 @@ import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 
+import Header from './components/organisms/Header';
+
 
 // Styled component
 const AppContainer = styled.div`
@@ -21,29 +23,31 @@ const App = () => {
 
   return (
     <>
-        <AppContainer>
-      <Routes>
-
-        {
-          !currentUser ? (
-            <>
-              <Route index element={<Login />} />
-              <Route path='/register'>
-                <Route index element={<Register />} />
-              </Route>
-            </>
-          ) : (
-            <>
-              <Route index element={<Home />} />
-            </>
+      <AppContainer>
+        <Header user={currentUser} />
+        <Routes>
+          <Route index element={<Home />} />
+          {
+            !currentUser ? (
+              <>
+                <Route path='/login'>
+                  <Route index element={<Login />} />
+                </Route>
+                <Route path='/register'>
+                  <Route index element={<Register />} />
+                </Route>
+              </>
+            ) : (
+              <>
+              </>
             )
-        }
+          }
 
-        <Route path='*' element={<h1>Error 404</h1>} />
-      </Routes>
+          <Route path='*' element={<h1>Error 404</h1>} />
+        </Routes>
       </AppContainer>
     </>
-    );
-  }
-  
-  export default App;
+  );
+}
+
+export default App;
