@@ -12,8 +12,7 @@ const Home = () => {
           {questions && questions.map((question) => (
             <div key={question.id}>
               <h3>{question.title}</h3>
-              {/* <p>{question.description}</p>
-              <p>Author: {question.author}</p> */}
+              <p>{question.body}</p>
             </div>
           ))}
 

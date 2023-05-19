@@ -24,7 +24,12 @@
     {
       "id": 2,
       "title": "Python package installation issue",
-      "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus."      
+      "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus."
+    },
+    {
+      "id": 3,
+      "title": "IT enquiry",
+      "body": "Answer test"
     }
   ]
 }
