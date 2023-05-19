@@ -10,6 +10,7 @@ import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 
 import Header from './components/organisms/Header';
+import Profile from './components/pages/Profile';
 
 
 // Styled component
@@ -39,6 +40,9 @@ const App = () => {
               </>
             ) : (
               <>
+                <Route path='/profile'>
+                  <Route index element={<Profile />} />
+                </Route>
               </>
             )
           }
