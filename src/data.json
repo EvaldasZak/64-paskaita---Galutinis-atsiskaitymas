@@ -24,46 +24,53 @@
   ],
   "questions": [
     {
-      "title": "its",
+      "title": "it is",
       "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
-      "user_id": 1,
-      "edited": false,
+      "userId": 1,
+      "edited": true,
       "id": 1
     },
     {
       "id": 2,
       "title": "Python package installation issue",
       "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
-      "user_id": 2,
+      "userId": 2,
       "edited": true
     },
     {
-      "id": 3,
-      "title": "IT enquiry",
+      "title": "IT enquiry5",
       "body": "Answer test",
-      "user_id": 1,
-      "edited": false
+      "userId": 1,
+      "edited": true,
+      "id": 3
     },
     {
       "id": 4,
       "title": "LOL",
       "body": "How to win at lol",
-      "user_id": 3,
+      "userId": 3,
       "edited": false
     },
     {
       "title": "vaclovad",
       "body": "yeso",
-      "user_id": 1,
+      "userId": 1,
       "edited": true,
       "id": 5
     },
     {
       "title": "test",
       "body": "testing if it works, test of edit",
-      "user_id": 1,
+      "userId": 1,
       "edited": true,
       "id": 6
+    },
+    {
+      "id": 7,
+      "title": "fsd",
+      "body": "gdfg",
+      "userId": 1,
+      "edited": false
     }
   ]
 }

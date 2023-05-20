@@ -1,67 +1,93 @@
-import { useReducer, useEffect, useState, createContext } from "react";
+import {
+  useReducer,
+  useEffect,
+  useState,
+  createContext,
+  useCallback,
+} from "react";
+import { getUsers, registerUser } from "../api/users";
 
-const UsersContext = createContext()
-
-const USERS_ACTION_TYPE = {
-  GET: 'get_all_users',
-  ADD: 'add_new_user',
-  LOGOUT: 'logout_user',
-};
+const UsersContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case USERS_ACTION_TYPE.GET:
-      return action.data;
-    case USERS_ACTION_TYPE.ADD:
-      fetch(`http://localhost:8080/users`, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(action.data),
-      });
-      return [...state, action.data];
-    case USERS_ACTION_TYPE.LOGOUT: // Handle logout action
-      return []; // Clear the user state
+    case "FETCH_USERS":
+      return action.payload;
+    case "REGISTER_USER":
+      return [...state, action.payload];
+    case "LOGOUT_USER":
+      return [];
     default:
       return state;
   }
 };
 
-
 const UsersProvider = ({ children }) => {
+  const [users, dispatch] = useReducer(reducer, []);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const [users, setUsers] = useReducer(reducer, [])
-  const [currentUser, setCurrentUser] = useState(null)
-
-  const logout = () => {
-    setCurrentUser(null);
+  const fetchUsers = async (dispatch) => {
+    try {
+      const items = await getUsers();
+      dispatch({ type: "FETCH_USERS", payload: items });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
   };
 
+  const registerUserApi = async (dispatch, user) => {
+    try {
+      const item = await registerUser(user);
+      localStorage.setItem("loggedInUser", JSON.stringify(item));
+      setCurrentUser(item);
+      dispatch({ type: "REGISTER_USER", payload: item });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
+  const loginUser = async (dispatch, user) => {
+    try {
+      setCurrentUser(user);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("loggedInUser");
+    setCurrentUser(null);
+  };
+  const fetchUsersCallback = useCallback(fetchUsers, []);
+
   useEffect(() => {
-    fetch('http://localhost:8080/users')
-      .then(res => res.json())
-      .then(data => {
-        setUsers({
-          type: USERS_ACTION_TYPE.GET,
-          data: data
-        })
-      })
-  }, [])
+    const tryLocalLogin = async () => {
+      await fetchUsersCallback(dispatch);
+      const storageUser = localStorage.getItem("loggedInUser");
+      if (storageUser) {
+        setCurrentUser(JSON.parse(storageUser));
+      }
+    };
+
+    tryLocalLogin();
+  }, [fetchUsersCallback, dispatch, setCurrentUser]);
 
   return (
     <UsersContext.Provider
       value={{
         users,
-        setUsers,
-        USERS_ACTION_TYPE,
+        dispatch,
         currentUser,
-        setCurrentUser,
-        logout
+        registerUserApi,
+        loginUser,
+        logout,
       }}
     >
       {children}
     </UsersContext.Provider>
   );
-}
+};
 
 export default UsersContext;
-export { UsersProvider }
+export { UsersProvider };

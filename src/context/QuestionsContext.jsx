@@ -1,95 +1,120 @@
 import { useReducer, useEffect, createContext } from "react";
+import {
+  getQuestions,
+  getQuestionById,
+  addQuestion,
+  updateQuestion,
+  deleteQuestion,
+} from "../api/questions";
 
 const QuestionsContext = createContext();
 
-const QUESTIONS_ACTION_TYPE = {
-  GET: 'get_all_questions',
-  ADD: 'add_new_question',
-  GET_BY_ID: 'get_question_by_id',
-  UPDATE: 'update_question'
-};
-
 const reducer = (state, action) => {
   switch (action.type) {
-    case QUESTIONS_ACTION_TYPE.GET:
-      return action.data;
-    case QUESTIONS_ACTION_TYPE.ADD:
-      fetch(`http://localhost:8080/questions`, {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(action.data)
-      })
-      return [...state, action.data];
-    case QUESTIONS_ACTION_TYPE.GET_BY_ID:
-      return state.find(question => question.id === action.data);
-    case QUESTIONS_ACTION_TYPE.UPDATE:
-        return state.map((question) => {
-          if (question.id === action.data.id) {
-            return {
-              ...question,
-              title: action.data.title,
-              body: action.data.body,
-              edited: true,
-              user_id: action.data.user_id
-            };
-          }
-          return question;
-        });
+    case "FETCH_QUESTIONS":
+      return {
+        ...state,
+        questions: action.payload,
+        error: null,
+      };
+    case "ADD_QUESTION":
+      return {
+        ...state,
+        questions: [...state.questions, action.payload],
+        error: null,
+      };
+    case "UPDATE_QUESTION":
+      return {
+        ...state,
+        questions: state.questions.map((question) =>
+          question.id === action.payload.id ? action.payload : question
+        ),
+        error: null,
+      };
+    case "DELETE_QUESTION":
+      return {
+        ...state,
+        questions: state.questions.filter(
+          (question) => question.id !== action.payload
+        ),
+        error: null,
+      };
+    case "SET_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
 };
 
 const QuestionsProvider = ({ children }) => {
-  const [questions, setQuestions] = useReducer(reducer, null);
-
-  const getQuestionById = (questionId) => {
-    const question = questions.find(question => question.id === parseInt(questionId));
-    return question || null;
+  const initialState = {
+    questions: null,
+    error: null,
   };
 
-  const editQuestion = (id, editedTitle, editedBody, user_id) => {
-    fetch(`http://localhost:8080/questions/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ title: editedTitle, body: editedBody, user_id, edited: true }),
-    })
-      .then((res) => res.json())
-      .then((updatedQuestion) => {
-        setQuestions({
-          type: QUESTIONS_ACTION_TYPE.UPDATE,
-          data: updatedQuestion,
-        });
-      })
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const fetchQuestions = async (dispatch) => {
+    try {
+      const items = await getQuestions({ _sort: "id", _order: "desc" });
+      dispatch({ type: "FETCH_QUESTIONS", payload: items });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
   };
-  
+
+  const getQuestionByIdFromApi = async (dispatch, questionId) => {
+    try {
+      const item = getQuestionById(questionId);
+      return item;
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
+  const addQuestionToApi = async (dispatch, item) => {
+    try {
+      const addedItem = await addQuestion(item);
+      dispatch({ type: "ADD_QUESTION", payload: addedItem });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
+  const updateQuestionInApi = async (dispatch, itemId, item) => {
+    try {
+      const updatedItem = await updateQuestion(itemId, item);
+      dispatch({ type: "UPDATE_QUESTION", payload: updatedItem });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
+  const deleteQuestionFromApi = async (dispatch, itemId) => {
+    try {
+      await deleteQuestion(itemId);
+      dispatch({ type: "DELETE_QUESTION", payload: itemId });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      fetch('http://localhost:8080/questions')
-        .then(res => res.json())
-        .then(data => {
-          setQuestions({
-            type: QUESTIONS_ACTION_TYPE.GET,
-            data: data
-          });
-        })
-        .catch(error => {
-          // Handle the error
-        });
-    };
-
-    fetchData();
+    fetchQuestions(dispatch);
   }, []);
 
   return (
     <QuestionsContext.Provider
       value={{
-        questions,
-        setQuestions,
-        QUESTIONS_ACTION_TYPE,
-        getQuestionById,
-        editQuestion
+        state,
+        dispatch,
+        getQuestionByIdFromApi,
+        addQuestionToApi,
+        updateQuestionInApi,
+        deleteQuestionFromApi,
       }}
     >
       {children}
@@ -99,4 +124,3 @@ const QuestionsProvider = ({ children }) => {
 
 export default QuestionsContext;
 export { QuestionsProvider };
-
