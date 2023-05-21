@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import QuestionsContext from "../../context/QuestionsContext";
@@ -6,14 +6,16 @@ import UsersContext from "../../context/UsersContext";
 
 import { Vote } from "../organisms/Vote";
 import EditedTag from "../atoms/EditedTag";
+import Answer from "../organisms/Answer";
 
 const Question = () => {
   const { id } = useParams();
   const {
+    state,
     dispatch,
-    getQuestionByIdFromApi,
     updateQuestionInApi,
     deleteQuestionFromApi,
+    addAnswerToApi,
   } = useContext(QuestionsContext);
   const { currentUser } = useContext(UsersContext);
 
@@ -24,14 +26,20 @@ const Question = () => {
   const [editedTitle, setEditedTitle] = useState("");
   const [editedBody, setEditedBody] = useState("");
 
-  const fetchQuestion = useCallback(async () => {
-    const fetchedQuestion = await getQuestionByIdFromApi(dispatch, id);
-    setQuestion(fetchedQuestion);
-  }, [getQuestionByIdFromApi, id, dispatch]);
+  const [answers, setAnswers] = useState([]);
+  const [newAnswer, setNewAnswer] = useState("");
 
   useEffect(() => {
-    fetchQuestion();
-  }, [fetchQuestion]);
+    const questionFound = state.questions.find(
+      (question) => question.id === parseInt(id)
+    );
+    const answersFound = state.answers.filter(
+      (answer) => answer.questionId === parseInt(id)
+    );
+
+    setQuestion(questionFound);
+    setAnswers(answersFound);
+  }, [state.questions, id, state.answers]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -56,6 +64,21 @@ const Question = () => {
       body: editedBody,
       edited: true,
     }));
+  };
+
+  const handleAddAnswer = async () => {
+    // Prepare the answer object
+    const answer = {
+      questionId: question.id,
+      userId: currentUser.id,
+      body: newAnswer,
+    };
+
+    // Add the answer to the API
+    await addAnswerToApi(dispatch, answer);
+
+    // Reset the new answer input field
+    setNewAnswer("");
   };
 
   const handleRemove = () => {
@@ -102,6 +125,20 @@ const Question = () => {
             )}
           </div>
         </div>
+        <div className="answers">
+          {answers &&
+            answers.map((answer) => <Answer key={answer.id} answer={answer} />)}
+        </div>
+        {currentUser && (
+          <div className="add-answer">
+            <textarea
+              value={newAnswer}
+              onChange={(e) => setNewAnswer(e.target.value)}
+              placeholder="Add your answer..."
+            />
+            <button onClick={handleAddAnswer}>Add Answer</button>
+          </div>
+        )}
       </section>
     </main>
   );

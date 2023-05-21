@@ -1,11 +1,12 @@
 import { useReducer, useEffect, createContext } from "react";
 import {
   getQuestions,
-  getQuestionById,
   addQuestion,
   updateQuestion,
   deleteQuestion,
 } from "../api/questions";
+
+import { addAnswer, getAnswers } from "../api/answers";
 
 const QuestionsContext = createContext();
 
@@ -15,6 +16,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         questions: action.payload,
+        error: null,
+      };
+    case "FETCH_ANSWERS":
+      return {
+        ...state,
+        answers: action.payload,
         error: null,
       };
     case "ADD_QUESTION":
@@ -39,6 +46,12 @@ const reducer = (state, action) => {
         ),
         error: null,
       };
+    case "ADD_ANSWER":
+      return {
+        ...state,
+        answers: [...state.answers, action.payload],
+        error: null,
+      };
     case "SET_ERROR":
       return {
         ...state,
@@ -52,6 +65,7 @@ const reducer = (state, action) => {
 const QuestionsProvider = ({ children }) => {
   const initialState = {
     questions: null,
+    answers: [],
     error: null,
   };
 
@@ -59,17 +73,16 @@ const QuestionsProvider = ({ children }) => {
 
   const fetchQuestions = async (dispatch) => {
     try {
-      const items = await getQuestions({ _sort: "id", _order: "desc" });
+      const items = await getQuestions();
       dispatch({ type: "FETCH_QUESTIONS", payload: items });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: error.message });
     }
   };
-
-  const getQuestionByIdFromApi = async (dispatch, questionId) => {
+  const fetchAnswers = async (dispatch) => {
     try {
-      const item = getQuestionById(questionId);
-      return item;
+      const items = await getAnswers();
+      dispatch({ type: "FETCH_ANSWERS", payload: items });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: error.message });
     }
@@ -102,7 +115,17 @@ const QuestionsProvider = ({ children }) => {
     }
   };
 
+  const addAnswerToApi = async (dispatch, answer) => {
+    try {
+      const addedAnswer = await addAnswer(answer);
+      dispatch({ type: "ADD_ANSWER", payload: addedAnswer });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
   useEffect(() => {
+    fetchAnswers(dispatch);
     fetchQuestions(dispatch);
   }, []);
 
@@ -111,10 +134,10 @@ const QuestionsProvider = ({ children }) => {
       value={{
         state,
         dispatch,
-        getQuestionByIdFromApi,
         addQuestionToApi,
         updateQuestionInApi,
         deleteQuestionFromApi,
+        addAnswerToApi,
       }}
     >
       {children}

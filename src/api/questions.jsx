@@ -17,20 +17,6 @@ export const getQuestions = async (params) => {
   }
 };
 
-export const getQuestionById = async (questionId) => {
-  try {
-    const response = await fetch(`${API_URL}/questions/${questionId}`, {
-      method: "GET",
-      headers: { "Content-type": "application/json" },
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error getting question by ID:", error);
-    throw error;
-  }
-};
-
 export const addQuestion = async (question) => {
   try {
     const response = await fetch(`${API_URL}/questions`, {

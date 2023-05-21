@@ -72,5 +72,14 @@
       "userId": 1,
       "edited": false
     }
+  ],
+  "answers": [
+    {
+      "id": 1,
+      "questionId": 1,
+      "body": "first",
+      "userId": 2,
+      "edited": false
+    }
   ]
 }
