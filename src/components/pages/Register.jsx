@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
 
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link } from "react-router-dom";
 
-import UsersContext from '../../context/UsersContext'
+import UsersContext from "../../context/UsersContext";
 
 const RegisterContainer = styled.div`
   max-width: 400px;
@@ -37,7 +37,7 @@ const RegisterContainer = styled.div`
       }
     }
 
-    button[type='submit'] {
+    button[type="submit"] {
       padding: 0.5rem 1rem;
       background-color: #333;
       color: #fff;
@@ -56,14 +56,14 @@ const RegisterContainer = styled.div`
 `;
 
 const Register = () => {
-  const { users, setUsers, setCurrentUser, USERS_ACTION_TYPE } = useContext(UsersContext)
+  const { users, dispatch, registerUserApi } = useContext(UsersContext);
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -80,7 +80,7 @@ const Register = () => {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
-  
+
   const handleAvatarChange = (e) => {
     setAvatar(e.target.value);
   };
@@ -89,28 +89,27 @@ const Register = () => {
     e.preventDefault();
 
     if (name.length < 1) {
-      alert('Fill in name');
+      alert("Fill in name");
       return;
     }
 
     if (email.length < 3) {
-      alert('Fill in email address');
+      alert("Fill in email address");
       return;
     }
 
     if (password.length < 1 || confirmPassword.length < 1) {
-      alert('Fill in password');
+      alert("Fill in password");
       return;
     }
 
-
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert("Passwords do not match!");
       return;
     }
 
     if (avatar.length < 1) {
-      alert('Fill in avatar url');
+      alert("Fill in avatar url");
       return;
     }
 
@@ -119,52 +118,55 @@ const Register = () => {
       name,
       email,
       password,
-      avatar
-    }
-    
-    if (newUser.email !== users.find(user => user.email === email)?.email) {
-      setUsers({
-        type: USERS_ACTION_TYPE.ADD,
-        data: newUser
-      })
-      setCurrentUser(newUser)
-      navigate('/')
+      avatar,
+    };
+
+    if (newUser.email !== users.find((user) => user.email === email)?.email) {
+      registerUserApi(dispatch, newUser);
+      navigate("/");
     } else {
-      alert('This user is already registered, login!');
+      alert("This user is already registered, login!");
     }
   };
 
   return (
     <RegisterContainer>
+      <div>
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Name:</label>
+            <input type="text" value={name} onChange={handleNameChange} />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input type="text" value={email} onChange={handleEmailChange} />
+          </div>
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </div>
+          <div>
+            <label>Confirm Password:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+            />
+          </div>
+          <div>
+            <label>Avatar URL:</label>
+            <input type="text" value={avatar} onChange={handleAvatarChange} />
+          </div>
+          <button type="submit">Register</button>
+        </form>
 
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input type="text" value={name} onChange={handleNameChange} />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input type="text" value={email} onChange={handleEmailChange} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-        </div>
-        <div>
-          <label>Avatar URL:</label>
-          <input type="text" value={avatar} onChange={handleAvatarChange} />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-
-      <Link to="/">Already registered</Link>
-    </div>
+        <Link to="/">Already registered</Link>
+      </div>
     </RegisterContainer>
   );
 };
