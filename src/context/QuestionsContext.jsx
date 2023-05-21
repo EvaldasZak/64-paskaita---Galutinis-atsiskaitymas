@@ -6,7 +6,12 @@ import {
   deleteQuestion,
 } from "../api/questions";
 
-import { addAnswer, getAnswers, updateAnswer } from "../api/answers";
+import {
+  addAnswer,
+  deleteAnswer,
+  getAnswers,
+  updateAnswer,
+} from "../api/answers";
 
 const QuestionsContext = createContext();
 
@@ -58,6 +63,12 @@ const reducer = (state, action) => {
         answers: state.answers.map((answer) =>
           answer.id === action.payload.id ? action.payload : answer
         ),
+        error: null,
+      };
+    case "DELETE_ANSWER":
+      return {
+        ...state,
+        answers: state.answers.filter((answer) => answer.id !== action.payload),
         error: null,
       };
     case "SET_ERROR":
@@ -142,6 +153,15 @@ const QuestionsProvider = ({ children }) => {
     }
   };
 
+  const deleteAnswerFromApi = async (dispatch, itemId) => {
+    try {
+      await deleteAnswer(itemId);
+      dispatch({ type: "DELETE_ANSWER", payload: itemId });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
   useEffect(() => {
     fetchAnswers(dispatch);
     fetchQuestions(dispatch);
@@ -157,6 +177,7 @@ const QuestionsProvider = ({ children }) => {
         deleteQuestionFromApi,
         addAnswerToApi,
         updateAnswerInApi,
+        deleteAnswerFromApi,
       }}
     >
       {children}

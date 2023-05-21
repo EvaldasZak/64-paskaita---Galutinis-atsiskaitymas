@@ -17,6 +17,7 @@ const Question = () => {
     deleteQuestionFromApi,
     addAnswerToApi,
     updateAnswerInApi,
+    deleteAnswerFromApi,
   } = useContext(QuestionsContext);
   const { currentUser } = useContext(UsersContext);
 
@@ -114,6 +115,10 @@ const Question = () => {
     navigate("/");
   };
 
+  const handleDeleteAnswer = (id) => {
+    deleteAnswerFromApi(dispatch, id);
+  };
+
   if (!question) {
     return <div>Error: Question not found</div>;
   }
@@ -143,7 +148,7 @@ const Question = () => {
                 <p>{question.body}</p>
                 <EditedTag edited={question.edited} />
 
-                {currentUser && currentUser.id === question.user_id && (
+                {currentUser && currentUser.id === question.userId && (
                   <>
                     <button onClick={handleEdit}>Edit</button>
                     <button onClick={handleRemove}>Remove</button>
@@ -160,6 +165,7 @@ const Question = () => {
                 key={answer.id}
                 answer={answer}
                 handleEditAnswer={handleEditAnswer}
+                handleDeleteAnswer={handleDeleteAnswer}
                 handleSaveAnswer={handleSaveAnswer}
                 currentUser={currentUser}
               />

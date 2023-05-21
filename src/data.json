@@ -50,27 +50,6 @@
       "body": "How to win at lol",
       "userId": 3,
       "edited": false
-    },
-    {
-      "title": "vaclovad",
-      "body": "yeso",
-      "userId": 1,
-      "edited": true,
-      "id": 5
-    },
-    {
-      "title": "test",
-      "body": "testing if it works, test of edit",
-      "userId": 1,
-      "edited": true,
-      "id": 6
-    },
-    {
-      "id": 7,
-      "title": "fsd",
-      "body": "gdfg",
-      "userId": 1,
-      "edited": false
     }
   ],
   "answers": [

@@ -6,6 +6,7 @@ const Answer = ({
   handleEditAnswer,
   handleSaveAnswer,
   currentUser,
+  handleDeleteAnswer,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedAnswer, setEditedAnswer] = useState(answer.body);
@@ -19,6 +20,10 @@ const Answer = ({
   const handleSave = () => {
     handleSaveAnswer(answer, editedAnswer);
     setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    handleDeleteAnswer(answer.id);
   };
 
   return (
@@ -38,6 +43,7 @@ const Answer = ({
           {currentUser && currentUser.id === answer.userId && (
             <>
               <button onClick={handleEdit}>Edit</button>
+              <button onClick={handleDelete}>Remove</button>
             </>
           )}
         </>
