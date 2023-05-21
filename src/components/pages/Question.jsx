@@ -4,9 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import QuestionsContext from "../../context/QuestionsContext";
 import UsersContext from "../../context/UsersContext";
 
-import { Vote } from "../organisms/Vote";
 import EditedTag from "../atoms/EditedTag";
 import Answer from "../organisms/Answer";
+import Vote from "../organisms/Vote";
 
 const Question = () => {
   const { id } = useParams();
@@ -56,6 +56,7 @@ const Question = () => {
       body: editedBody,
       userId: currentUser.id,
       edited: true,
+      rating: 1,
     };
 
     updateQuestionInApi(dispatch, id, item);
@@ -75,6 +76,7 @@ const Question = () => {
       userId: currentUser.id,
       body: newAnswer,
       edited: false,
+      rating: 1,
     };
 
     // Add the answer to the API
@@ -127,7 +129,7 @@ const Question = () => {
     <main>
       <section id="single-question">
         <div className="question">
-          <Vote />
+          {/* <Vote /> */}
           <div className="question-details">
             {isEditing ? (
               <>
@@ -144,6 +146,12 @@ const Question = () => {
               </>
             ) : (
               <>
+                <Vote
+                  type="question"
+                  id={question.id}
+                  object={question}
+                  rating={question.rating}
+                />
                 <h3>{question.title}</h3>
                 <p>{question.body}</p>
                 <EditedTag edited={question.edited} />

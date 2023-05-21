@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EditedTag from "../atoms/EditedTag";
+import Vote from "./Vote";
 
 const Answer = ({
   answer,
@@ -38,6 +39,12 @@ const Answer = ({
         </>
       ) : (
         <>
+          <Vote
+            id={answer.id}
+            type="answer"
+            object={answer}
+            rating={answer.rating}
+          />
           <p>{answer.body}</p>
           <EditedTag edited={answer.edited} />
           {currentUser && currentUser.id === answer.userId && (
