@@ -1,11 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = ({ user, logout }) => {
   const handleLogout = () => {
     logout(); // Invoke the logout method
   };
-
 
   return (
     <>
@@ -34,7 +33,9 @@ const Header = ({ user, logout }) => {
                   <Link to="/profile">Profile</Link>
                 </li>
                 <li>
-                  <Link to="/" onClick={handleLogout}>Logout</Link>
+                  <Link to="/" onClick={handleLogout}>
+                    Logout
+                  </Link>
                 </li>
               </>
             )}
@@ -42,7 +43,7 @@ const Header = ({ user, logout }) => {
         </nav>
       </header>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
