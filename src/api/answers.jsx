@@ -30,3 +30,33 @@ export const getAnswers = async () => {
     throw error;
   }
 };
+
+export const updateAnswer = async (answerId, answer) => {
+  try {
+    const response = await fetch(`${API_URL}/answers/${answerId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(answer),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating answer:", error);
+    throw error;
+  }
+};
+
+export const deleteAnswer = async (answerId) => {
+  try {
+    const response = await fetch(`${API_URL}/answers/${answerId}`, {
+      method: "DELETE",
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error deleting answer:", error);
+    throw error;
+  }
+};

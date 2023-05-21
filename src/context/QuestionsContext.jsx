@@ -6,7 +6,7 @@ import {
   deleteQuestion,
 } from "../api/questions";
 
-import { addAnswer, getAnswers } from "../api/answers";
+import { addAnswer, getAnswers, updateAnswer } from "../api/answers";
 
 const QuestionsContext = createContext();
 
@@ -52,6 +52,14 @@ const reducer = (state, action) => {
         answers: [...state.answers, action.payload],
         error: null,
       };
+    case "UPDATE_ANSWER":
+      return {
+        ...state,
+        answers: state.answers.map((answer) =>
+          answer.id === action.payload.id ? action.payload : answer
+        ),
+        error: null,
+      };
     case "SET_ERROR":
       return {
         ...state,
@@ -79,6 +87,7 @@ const QuestionsProvider = ({ children }) => {
       dispatch({ type: "SET_ERROR", payload: error.message });
     }
   };
+
   const fetchAnswers = async (dispatch) => {
     try {
       const items = await getAnswers();
@@ -124,6 +133,15 @@ const QuestionsProvider = ({ children }) => {
     }
   };
 
+  const updateAnswerInApi = async (dispatch, itemId, item) => {
+    try {
+      const updatedItem = await updateAnswer(itemId, item);
+      dispatch({ type: "UPDATE_ANSWER", payload: updatedItem });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: error.message });
+    }
+  };
+
   useEffect(() => {
     fetchAnswers(dispatch);
     fetchQuestions(dispatch);
@@ -138,6 +156,7 @@ const QuestionsProvider = ({ children }) => {
         updateQuestionInApi,
         deleteQuestionFromApi,
         addAnswerToApi,
+        updateAnswerInApi,
       }}
     >
       {children}

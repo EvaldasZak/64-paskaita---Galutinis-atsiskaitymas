@@ -16,6 +16,7 @@ const Question = () => {
     updateQuestionInApi,
     deleteQuestionFromApi,
     addAnswerToApi,
+    updateAnswerInApi,
   } = useContext(QuestionsContext);
   const { currentUser } = useContext(UsersContext);
 
@@ -72,6 +73,7 @@ const Question = () => {
       questionId: question.id,
       userId: currentUser.id,
       body: newAnswer,
+      edited: false,
     };
 
     // Add the answer to the API
@@ -79,6 +81,32 @@ const Question = () => {
 
     // Reset the new answer input field
     setNewAnswer("");
+  };
+
+  const handleEditAnswer = (answerId) => {
+    // Find the answer being edited and set its editing state to true
+    setAnswers((prevAnswers) =>
+      prevAnswers.map((answer) =>
+        answer.id === answerId ? { ...answer, edited: true } : answer
+      )
+    );
+  };
+
+  const handleSaveAnswer = (old_answer, editedAnswer) => {
+    setAnswers((prevAnswers) =>
+      prevAnswers.map((answer) =>
+        answer.id === old_answer.id
+          ? { ...answer, body: editedAnswer, edited: false }
+          : answer
+      )
+    );
+
+    // Update the answer in the API
+    updateAnswerInApi(dispatch, old_answer.id, {
+      ...old_answer,
+      body: editedAnswer,
+      edited: true,
+    });
   };
 
   const handleRemove = () => {
@@ -127,7 +155,15 @@ const Question = () => {
         </div>
         <div className="answers">
           {answers &&
-            answers.map((answer) => <Answer key={answer.id} answer={answer} />)}
+            answers.map((answer) => (
+              <Answer
+                key={answer.id}
+                answer={answer}
+                handleEditAnswer={handleEditAnswer}
+                handleSaveAnswer={handleSaveAnswer}
+                currentUser={currentUser}
+              />
+            ))}
         </div>
         {currentUser && (
           <div className="add-answer">
