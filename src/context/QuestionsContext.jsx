@@ -124,7 +124,7 @@ const reducer = (state, action) => {
 
 const QuestionsProvider = ({ children }) => {
   const initialState = {
-    questions: null,
+    questions: [],
     answers: [],
     error: null,
   };
