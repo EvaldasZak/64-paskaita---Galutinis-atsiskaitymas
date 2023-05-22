@@ -11,6 +11,7 @@ import EditedTag from "../atoms/EditedTag";
 const Home = () => {
   const { state } = useContext(QuestionsContext);
   const [sortOrder, setSortOrder] = useState("date-desc");
+  const [filterOption, setFilterOption] = useState("all");
 
   // Sort the questions based on ID
   const sortedQuestions = [...state.questions].sort((a, b) => {
@@ -31,13 +32,37 @@ const Home = () => {
     }
   });
 
+  // Filter questions based on the selected option
+  const filteredQuestions = sortedQuestions.filter((question) => {
+    if (filterOption === "all") {
+      return true; // Show all questions
+    } else if (filterOption === "answered") {
+      return state.answers.some((answer) => answer.questionId === question.id);
+    } else if (filterOption === "unanswered") {
+      return !state.answers.some((answer) => answer.questionId === question.id);
+    }
+    return true;
+  });
+
   return (
     <>
       <main>
         <section>
           <h2>Latest Questions</h2>
           <Sort setSortOrder={setSortOrder} />
-          {sortedQuestions.map((question) => (
+          <div>
+            <label htmlFor="filter-select">Filter:</label>
+            <select
+              id="filter-select"
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="answered">Answered</option>
+              <option value="unanswered">Unanswered</option>
+            </select>
+          </div>
+          {filteredQuestions.map((question) => (
             <div key={question.id}>
               <Vote
                 type="question"
