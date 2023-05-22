@@ -59,8 +59,8 @@ const Login = () => {
   const { users, dispatch, loginUser } = useContext(UsersContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("u@u.com");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
