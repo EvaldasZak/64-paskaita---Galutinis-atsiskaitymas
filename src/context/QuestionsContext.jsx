@@ -17,6 +17,47 @@ const QuestionsContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "UPVOTE_QUESTION":
+      return {
+        ...state,
+        questions: state.questions.map((question) =>
+          question.id === action.payload
+            ? { ...question, rating: question.rating + 1 }
+            : question
+        ),
+        error: null,
+      };
+    case "DOWNVOTE_QUESTION":
+      return {
+        ...state,
+        questions: state.questions.map((question) =>
+          question.id === action.payload
+            ? { ...question, rating: question.rating - 1 }
+            : question
+        ),
+        error: null,
+      };
+    case "UPVOTE_ANSWER":
+      return {
+        ...state,
+        answers: state.answers.map((answer) =>
+          answer.id === action.payload
+            ? { ...answer, rating: answer.rating + 1 }
+            : answer
+        ),
+        error: null,
+      };
+    case "DOWNVOTE_ANSWER":
+      return {
+        ...state,
+        answers: state.answers.map((answer) =>
+          answer.id === action.payload
+            ? { ...answer, rating: answer.rating - 1 }
+            : answer
+        ),
+        error: null,
+      };
+
     case "FETCH_QUESTIONS":
       return {
         ...state,
@@ -162,6 +203,26 @@ const QuestionsProvider = ({ children }) => {
     }
   };
 
+  const upvoteQuestion = (dispatch, id, question) => {
+    dispatch({ type: "UPVOTE_QUESTION", payload: id });
+    updateQuestion(id, question);
+  };
+
+  const downvoteQuestion = (dispatch, id, question) => {
+    dispatch({ type: "DOWNVOTE_QUESTION", payload: id });
+    updateQuestion(id, question);
+  };
+
+  const upvoteAnswer = (dispatch, id, answer) => {
+    dispatch({ type: "UPVOTE_ANSWER", payload: id });
+    updateAnswer(id, answer);
+  };
+
+  const downvoteAnswer = (dispatch, id, answer) => {
+    dispatch({ type: "DOWNVOTE_ANSWER", payload: id });
+    updateAnswer(id, answer);
+  };
+
   useEffect(() => {
     fetchAnswers(dispatch);
     fetchQuestions(dispatch);
@@ -178,6 +239,10 @@ const QuestionsProvider = ({ children }) => {
         addAnswerToApi,
         updateAnswerInApi,
         deleteAnswerFromApi,
+        upvoteQuestion,
+        downvoteQuestion,
+        upvoteAnswer,
+        downvoteAnswer,
       }}
     >
       {children}

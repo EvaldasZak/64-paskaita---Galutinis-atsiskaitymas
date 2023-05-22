@@ -28,28 +28,32 @@
       "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
       "userId": 1,
       "edited": true,
-      "id": 1
+      "id": 1,
+      "rating": 10
     },
     {
       "id": 2,
       "title": "Python package installation issue",
       "body": "Simpsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida auctor aliquet. Integer sodales convallis tortor, in egestas orci accumsan sed. Nam ac faucibus lectus.",
       "userId": 2,
-      "edited": true
+      "edited": true,
+      "rating": -8
     },
     {
       "title": "IT enquiry5",
       "body": "Answer test",
       "userId": 1,
       "edited": true,
-      "id": 3
+      "id": 3,
+      "rating": -14
     },
     {
       "id": 4,
       "title": "LOL",
       "body": "How to win at lol",
       "userId": 3,
-      "edited": false
+      "edited": false,
+      "rating": 5
     }
   ],
   "answers": [
@@ -58,7 +62,8 @@
       "questionId": 1,
       "body": "first",
       "userId": 2,
-      "edited": false
+      "edited": false,
+      "rating": 1
     }
   ]
 }

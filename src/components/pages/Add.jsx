@@ -35,6 +35,7 @@ const Add = () => {
       body,
       userId: currentUser.id,
       edited: false,
+      rating: 1,
     };
 
     addQuestionToApi(dispatch, newQuestions);
