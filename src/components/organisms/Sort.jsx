@@ -1,13 +1,9 @@
 import React from "react";
 
-const Sort = ({ toggleSortOrder }) => {
+const Sort = ({ setSortOrder }) => {
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
-    if (selectedValue === "date-desc") {
-      toggleSortOrder(true); // Sort by ID (Descending order)
-    } else if (selectedValue === "date-asc") {
-      toggleSortOrder(false); // Sort by ID (Ascending order)
-    }
+    setSortOrder(selectedValue); // Sort by ID (Descending order)
   };
 
   return (

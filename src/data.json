@@ -64,6 +64,22 @@
       "userId": 2,
       "edited": false,
       "rating": 1
+    },
+    {
+      "questionId": 3,
+      "userId": 1,
+      "body": "newe resps",
+      "edited": false,
+      "rating": 1,
+      "id": 2
+    },
+    {
+      "questionId": 3,
+      "userId": 1,
+      "body": "yo",
+      "edited": false,
+      "rating": 1,
+      "id": 3
     }
   ]
 }
