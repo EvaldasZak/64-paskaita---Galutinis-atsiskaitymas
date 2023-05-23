@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import QuestionsContext from "../../context/QuestionsContext";
+import UsersContext from "../../context/UsersContext";
 import styled from "styled-components";
 
 const VoteComponent = styled.div`
@@ -61,7 +62,12 @@ const Vote = ({ type, id, rating, object }) => {
     dispatch,
   } = useContext(QuestionsContext);
 
+  const { currentUser } = useContext(UsersContext);
+
   const handleUpvote = () => {
+    if (!currentUser) {
+      return;
+    }
     const newObj = { ...object, rating: object.rating + 1 };
     if (type === "question") {
       upvoteQuestion(dispatch, id, newObj);
@@ -71,6 +77,9 @@ const Vote = ({ type, id, rating, object }) => {
   };
 
   const handleDownvote = () => {
+    if (!currentUser) {
+      return;
+    }
     const newObj = { ...object, rating: object.rating - 1 };
     if (type === "question") {
       downvoteQuestion(dispatch, id, newObj);
