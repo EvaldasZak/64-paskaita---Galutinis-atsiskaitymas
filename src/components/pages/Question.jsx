@@ -261,16 +261,14 @@ const Question = () => {
       <div className="answers">
         {answers &&
           answers.map((answer) => (
-            <div>
-              <Answer
-                key={answer.id}
-                answer={answer}
-                handleEditAnswer={handleEditAnswer}
-                handleDeleteAnswer={handleDeleteAnswer}
-                handleSaveAnswer={handleSaveAnswer}
-                currentUser={currentUser}
-              />
-            </div>
+            <Answer
+              key={answer.id}
+              answer={answer}
+              handleEditAnswer={handleEditAnswer}
+              handleDeleteAnswer={handleDeleteAnswer}
+              handleSaveAnswer={handleSaveAnswer}
+              currentUser={currentUser}
+            />
           ))}
       </div>
       {currentUser && (
