@@ -27,6 +27,27 @@
       "email": "John@gmail.com",
       "password": "secure",
       "avatar": "https://www.google.lt/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+    },
+    {
+      "id": 5,
+      "name": "Smith",
+      "email": "smith@gmail.com",
+      "password": "Password",
+      "avatar": "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"
+    },
+    {
+      "id": 6,
+      "name": "dasdas",
+      "email": "ddd@dd.com",
+      "password": "123",
+      "avatar": "1231"
+    },
+    {
+      "id": 7,
+      "name": "User",
+      "email": "test@test.com",
+      "password": "user",
+      "avatar": "avat152"
     }
   ],
   "questions": [
@@ -93,6 +114,22 @@
       "userId": 1,
       "edited": false,
       "rating": 1
+    },
+    {
+      "id": 10,
+      "title": "bfggf",
+      "body": "gfdd3",
+      "userId": 1,
+      "edited": true,
+      "rating": 2
+    },
+    {
+      "id": 11,
+      "title": "Klausimas / redaguotas klausimas",
+      "body": "Uzduodu nauja klausima / paredagavau uzduota klausima",
+      "userId": 5,
+      "edited": true,
+      "rating": 1
     }
   ],
   "answers": [
@@ -125,7 +162,7 @@
       "userId": 1,
       "body": "his answers33",
       "edited": true,
-      "rating": 8,
+      "rating": 12,
       "id": 5
     },
     {
@@ -133,16 +170,8 @@
       "userId": 1,
       "body": "love it",
       "edited": false,
-      "rating": 1,
+      "rating": -3,
       "id": 6
-    },
-    {
-      "questionId": 2,
-      "userId": 1,
-      "body": "my answ",
-      "edited": false,
-      "rating": 1,
-      "id": 7
     },
     {
       "questionId": 2,
@@ -151,6 +180,38 @@
       "edited": false,
       "rating": 1,
       "id": 8
+    },
+    {
+      "questionId": 10,
+      "userId": 1,
+      "body": "sfdsdf",
+      "edited": false,
+      "rating": 1,
+      "id": 10
+    },
+    {
+      "questionId": 10,
+      "userId": 1,
+      "body": "komentavimas tik prisijungus",
+      "edited": false,
+      "rating": 1,
+      "id": 11
+    },
+    {
+      "questionId": 11,
+      "userId": 1,
+      "body": "bandom ir bandom redagavima",
+      "edited": true,
+      "rating": 3,
+      "id": 12
+    },
+    {
+      "questionId": 11,
+      "userId": 4,
+      "body": "john commenting on smith comment / redaguotas\n",
+      "edited": true,
+      "rating": -1,
+      "id": 13
     }
   ]
 }
