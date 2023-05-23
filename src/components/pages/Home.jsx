@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import QuestionsContext from "../../context/QuestionsContext";
 
@@ -7,6 +8,72 @@ import Vote from "../organisms/Vote";
 import Sort from "../organisms/Sort";
 
 import EditedTag from "../atoms/EditedTag";
+
+const Section = styled.section`
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+`;
+
+const Question = styled.div`
+  display: flex;
+  flex-direction: "row";
+`;
+
+const H2 = styled.h2`
+  margin: 0 0 10px;
+`;
+
+const Label = styled.label`
+  margin-right: 5px;
+`;
+
+const Select = styled.select`
+  appearance: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  &:hover {
+    background-color: #f9f9f9;
+  }
+`;
+
+const SelectArrow = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 6px 0 6px;
+  border-color: #888 transparent transparent transparent;
+  pointer-events: none;
+`;
+
+const VoteComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const SelectWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
 
 const Home = () => {
   const { state } = useContext(QuestionsContext);
@@ -45,14 +112,14 @@ const Home = () => {
   });
 
   return (
-    <>
-      <main>
-        <section>
-          <h2>Latest Questions</h2>
-          <Sort setSortOrder={setSortOrder} />
-          <div>
-            <label htmlFor="filter-select">Filter:</label>
-            <select
+    <Section>
+      <H2>Latest Questions</H2>
+      <div>
+        <Sort setSortOrder={setSortOrder} />
+        <div>
+          <Label htmlFor="filter-select">Filter:</Label>
+          <SelectWrapper>
+            <Select
               id="filter-select"
               value={filterOption}
               onChange={(e) => setFilterOption(e.target.value)}
@@ -60,28 +127,34 @@ const Home = () => {
               <option value="all">All</option>
               <option value="answered">Answered</option>
               <option value="unanswered">Unanswered</option>
-            </select>
+            </Select>
+            <SelectArrow></SelectArrow>
+          </SelectWrapper>
+        </div>
+        {filteredQuestions.map((question) => (
+          <div key={question.id}>
+            <hr />
+            <Question>
+              <VoteComponent>
+                <Vote
+                  type="question"
+                  rating={question.rating}
+                  id={question.id}
+                  object={question}
+                />
+              </VoteComponent>
+              <div>
+                <Link to={`/question/${question.id}`}>
+                  <h3>{question.title}</h3>
+                </Link>
+                <p>{question.body}</p>
+                <EditedTag edited={question.edited} />
+              </div>
+            </Question>
           </div>
-          {filteredQuestions.map((question) => (
-            <div key={question.id}>
-              <Vote
-                type="question"
-                rating={question.rating}
-                id={question.id}
-                object={question}
-              />
-              <Link to={`/question/${question.id}`}>
-                <h3>
-                  {question.title} - {question.id}
-                </h3>
-              </Link>
-              <p>{question.body}</p>
-              <EditedTag edited={question.edited} />
-            </div>
-          ))}
-        </section>
-      </main>
-    </>
+        ))}
+      </div>
+    </Section>
   );
 };
 

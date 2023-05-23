@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-
 import { useNavigate, Link } from "react-router-dom";
+import * as Yup from "yup";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 
 import UsersContext from "../../context/UsersContext";
 
@@ -55,63 +56,24 @@ const RegisterContainer = styled.div`
   }
 `;
 
+const validationSchema = Yup.object({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+  avatar: Yup.string().required("Avatar URL is required"),
+});
+
 const Register = () => {
   const { users, dispatch, registerUserApi } = useContext(UsersContext);
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [avatar, setAvatar] = useState("");
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  };
-
-  const handleAvatarChange = (e) => {
-    setAvatar(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (name.length < 1) {
-      alert("Fill in name");
-      return;
-    }
-
-    if (email.length < 3) {
-      alert("Fill in email address");
-      return;
-    }
-
-    if (password.length < 1 || confirmPassword.length < 1) {
-      alert("Fill in password");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    if (avatar.length < 1) {
-      alert("Fill in avatar url");
-      return;
-    }
+  const handleSubmit = (values) => {
+    const { name, email, password, avatar } = values;
 
     const newUser = {
       id: users[users.length - 1].id + 1,
@@ -121,11 +83,11 @@ const Register = () => {
       avatar,
     };
 
-    if (newUser.email !== users.find((user) => user.email === email)?.email) {
+    if (users.some((user) => user.email === email)) {
+      alert("This user is already registered, login!");
+    } else {
       registerUserApi(dispatch, newUser);
       navigate("/");
-    } else {
-      alert("This user is already registered, login!");
     }
   };
 
@@ -133,37 +95,50 @@ const Register = () => {
     <RegisterContainer>
       <div>
         <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name:</label>
-            <input type="text" value={name} onChange={handleNameChange} />
-          </div>
-          <div>
-            <label>Email:</label>
-            <input type="text" value={email} onChange={handleEmailChange} />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </div>
-          <div>
-            <label>Confirm Password:</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
-          </div>
-          <div>
-            <label>Avatar URL:</label>
-            <input type="text" value={avatar} onChange={handleAvatarChange} />
-          </div>
-          <button type="submit">Register</button>
-        </form>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            avatar: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          <Form>
+            <div>
+              <label>Name:</label>
+              <Field type="text" name="name" />
+              <ErrorMessage name="name" component="div" className="error" />
+            </div>
+            <div>
+              <label>Email:</label>
+              <Field type="text" name="email" />
+              <ErrorMessage name="email" component="div" className="error" />
+            </div>
+            <div>
+              <label>Password:</label>
+              <Field type="password" name="password" />
+              <ErrorMessage name="password" component="div" className="error" />
+            </div>
+            <div>
+              <label>Confirm Password:</label>
+              <Field type="password" name="confirmPassword" />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className="error"
+              />
+            </div>
+            <div>
+              <label>Avatar URL:</label>
+              <Field type="text" name="avatar" />
+              <ErrorMessage name="avatar" component="div" className="error" />
+            </div>
+            <button type="submit">Register</button>
+          </Form>
+        </Formik>
 
         <Link to="/">Already registered</Link>
       </div>

@@ -18,8 +18,9 @@ import Question from "./components/pages/Question";
 
 // Styled component
 const AppContainer = styled.div`
-  height: 50vh;
-  padding: 0px 30px;
+  max-width: 1000px;
+  margin: 0 80px;
+  padding: 0;
 `;
 
 const App = () => {
@@ -27,9 +28,8 @@ const App = () => {
 
   return (
     <>
+      <Header user={currentUser} logout={logout} />
       <AppContainer>
-        <Header user={currentUser} logout={logout} />
-
         <Routes>
           <Route path="/" element={<Home />} />
 

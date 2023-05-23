@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import styled from "styled-components";
 
 import UsersContext from "../../context/UsersContext";
@@ -59,28 +60,15 @@ const Login = () => {
   const { users, dispatch, loginUser } = useContext(UsersContext);
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (email.length < 3) {
-      alert("Fill in email address");
-      return;
-    }
-    if (password.length < 1) {
-      alert("Fill in password");
-      return;
-    }
+  const handleSubmit = (values, { setFieldValue }) => {
+    const { email, password } = values;
 
     const loggedInUser = users.find(
       (user) => email === user.email && password === user.password
@@ -88,11 +76,8 @@ const Login = () => {
     if (loggedInUser) {
       loginUser(dispatch, loggedInUser);
       navigate("/");
-
-      setEmail("");
-      setPassword("");
     } else {
-      setPassword("");
+      setFieldValue("password", "");
       alert("User with these credentials is not found!");
     }
   };
@@ -101,21 +86,25 @@ const Login = () => {
     <LoginContainer>
       <div>
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email:</label>
-            <input type="text" value={email} onChange={handleEmailChange} />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </div>
-          <button type="submit">Login</button>
-        </form>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          <Form>
+            <div>
+              <label>Email:</label>
+              <Field type="text" name="email" />
+              <ErrorMessage name="email" component="div" className="error" />
+            </div>
+            <div>
+              <label>Password:</label>
+              <Field type="password" name="password" />
+              <ErrorMessage name="password" component="div" className="error" />
+            </div>
+            <button type="submit">Login</button>
+          </Form>
+        </Formik>
         <Link to="/register">Don't have an account?</Link>
       </div>
     </LoginContainer>

@@ -1,5 +1,56 @@
 import React, { useContext } from "react";
 import QuestionsContext from "../../context/QuestionsContext";
+import styled from "styled-components";
+
+const VoteComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+`;
+
+const QuestionVote = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: column;
+`;
+
+const VoteArrows = styled.div`
+  display: flex;
+`;
+
+const UpArrow = styled.span`
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 14px;
+  line-height: 1;
+  color: #555555;
+
+  &:hover {
+    color: #ff9900;
+  }
+`;
+
+const DownArrow = styled.span`
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 14px;
+  line-height: 1;
+  color: #555555;
+
+  &:hover {
+    color: #ff9900;
+  }
+`;
+
+const VoteCount = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+`;
 
 const Vote = ({ type, id, rating, object }) => {
   const {
@@ -28,19 +79,15 @@ const Vote = ({ type, id, rating, object }) => {
     }
   };
   return (
-    <div className="vote-component">
-      <div className="question-vote">
-        <div className="vote-arrows">
-          <span className="up-arrow" onClick={handleUpvote}>
-            ▲
-          </span>
-          <span className="down-arrow" onClick={handleDownvote}>
-            ▼
-          </span>
-        </div>
-        <span className="vote-count">{rating}</span>
-      </div>
-    </div>
+    <VoteComponent>
+      <QuestionVote>
+        <VoteCount>{rating}</VoteCount>
+        <VoteArrows>
+          <UpArrow onClick={handleUpvote}>▲</UpArrow>
+          <DownArrow onClick={handleDownvote}>▼</DownArrow>
+        </VoteArrows>
+      </QuestionVote>
+    </VoteComponent>
   );
 };
 
