@@ -1,23 +1,16 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import QuestionsContext from "../../context/QuestionsContext";
+import UsersContext from "../../context/UsersContext";
 
-import Vote from "../organisms/Vote";
 import Sort from "../organisms/Sort";
-
-import EditedTag from "../atoms/EditedTag";
+import Question from "../organisms/Question";
 
 const Section = styled.section`
   background-color: #fff;
   padding: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-`;
-
-const Question = styled.div`
-  display: flex;
-  flex-direction: "row";
 `;
 
 const H2 = styled.h2`
@@ -63,13 +56,6 @@ const SelectArrow = styled.div`
   pointer-events: none;
 `;
 
-const VoteComponent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
-`;
-
 const SelectWrapper = styled.div`
   position: relative;
   display: inline-block;
@@ -77,6 +63,7 @@ const SelectWrapper = styled.div`
 
 const Home = () => {
   const { state } = useContext(QuestionsContext);
+  const { users } = useContext(UsersContext);
   const [sortOrder, setSortOrder] = useState("date-desc");
   const [filterOption, setFilterOption] = useState("all");
 
@@ -132,26 +119,7 @@ const Home = () => {
           </SelectWrapper>
         </div>
         {filteredQuestions.map((question) => (
-          <div key={question.id}>
-            <hr />
-            <Question>
-              <VoteComponent>
-                <Vote
-                  type="question"
-                  rating={question.rating}
-                  id={question.id}
-                  object={question}
-                />
-              </VoteComponent>
-              <div>
-                <Link to={`/question/${question.id}`}>
-                  <h3>{question.title}</h3>
-                </Link>
-                <p>{question.body}</p>
-                <EditedTag edited={question.edited} />
-              </div>
-            </Question>
-          </div>
+          <Question question={question} key={question.id} users={users} />
         ))}
       </div>
     </Section>
