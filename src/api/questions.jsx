@@ -1,14 +1,11 @@
 import { API_URL } from "./api_url";
 
-export const getQuestions = async (params) => {
+export const getQuestions = async () => {
   try {
-    const response = await fetch(
-      `${API_URL}/questions?${new URLSearchParams(params).toString()}`,
-      {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      }
-    );
+    const response = await fetch(`${API_URL}/questions`, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
     const data = await response.json();
     return data;
   } catch (error) {
