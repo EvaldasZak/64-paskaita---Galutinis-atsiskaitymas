@@ -5,9 +5,8 @@ import styled from "styled-components";
 import QuestionsContext from "../../context/QuestionsContext";
 import UsersContext from "../../context/UsersContext";
 
-import EditedTag from "../atoms/EditedTag";
 import Answer from "../organisms/Answer";
-import Vote from "../organisms/Vote";
+import QuestionComponent from "../organisms/Question";
 
 const Section = styled.section`
   display: flex;
@@ -83,18 +82,6 @@ const Button = styled.button`
     background-color: #0056b3;
   }
 `;
-const VoteComponent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
-`;
-
-const QuestionStyle = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 20px 0;
-`;
 
 const Question = () => {
   const { id } = useParams();
@@ -107,7 +94,7 @@ const Question = () => {
     updateAnswerInApi,
     deleteAnswerFromApi,
   } = useContext(QuestionsContext);
-  const { currentUser } = useContext(UsersContext);
+  const { currentUser, users } = useContext(UsersContext);
 
   const navigate = useNavigate();
 
@@ -214,9 +201,9 @@ const Question = () => {
   }
 
   return (
-    <Section id="single-question">
-      <div className="question">
-        {/* <Vote /> */}
+    <>
+      <QuestionComponent question={question} key={question.id} users={users} />
+      <Section>
         <div className="question-details">
           {isEditing ? (
             <EditableContent>
@@ -233,55 +220,40 @@ const Question = () => {
             </EditableContent>
           ) : (
             <div>
-              <QuestionStyle>
-                <VoteComponent>
-                  <Vote
-                    type="question"
-                    id={question.id}
-                    object={question}
-                    rating={question.rating}
-                  />
-                </VoteComponent>
+              {currentUser && currentUser.id === question.userId && (
                 <div>
-                  <h3>{question.title}</h3>
-                  <p>{question.body}</p>
-                  <EditedTag edited={question.edited} />
-                  {currentUser && currentUser.id === question.userId && (
-                    <div>
-                      <Button onClick={handleEdit}>Edit</Button>
-                      <Button onClick={handleRemove}>Remove</Button>
-                    </div>
-                  )}
+                  <Button onClick={handleEdit}>Edit</Button>
+                  <Button onClick={handleRemove}>Remove</Button>
                 </div>
-              </QuestionStyle>
+              )}
             </div>
           )}
         </div>
-      </div>
-      <div className="answers">
-        {answers &&
-          answers.map((answer) => (
-            <Answer
-              key={answer.id}
-              answer={answer}
-              handleEditAnswer={handleEditAnswer}
-              handleDeleteAnswer={handleDeleteAnswer}
-              handleSaveAnswer={handleSaveAnswer}
-              currentUser={currentUser}
-            />
-          ))}
-      </div>
-      {currentUser && (
-        <div className="add-answer">
-          <textarea
-            value={newAnswer}
-            onChange={(e) => setNewAnswer(e.target.value)}
-            placeholder="Add your answer..."
-          />
-          <Button onClick={handleAddAnswer}>Add Answer</Button>
+        <div className="answers">
+          {answers &&
+            answers.map((answer) => (
+              <Answer
+                key={answer.id}
+                answer={answer}
+                handleEditAnswer={handleEditAnswer}
+                handleDeleteAnswer={handleDeleteAnswer}
+                handleSaveAnswer={handleSaveAnswer}
+                currentUser={currentUser}
+              />
+            ))}
         </div>
-      )}
-    </Section>
+        {currentUser && (
+          <div className="add-answer">
+            <textarea
+              value={newAnswer}
+              onChange={(e) => setNewAnswer(e.target.value)}
+              placeholder="Add your answer..."
+            />
+            <Button onClick={handleAddAnswer}>Add Answer</Button>
+          </div>
+        )}
+      </Section>
+    </>
   );
 };
 
