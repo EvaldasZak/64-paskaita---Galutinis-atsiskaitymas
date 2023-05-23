@@ -69,6 +69,14 @@
       "userId": 4,
       "edited": false,
       "rating": 1
+    },
+    {
+      "id": 6,
+      "title": "hello",
+      "body": "this is my quesiton3",
+      "userId": 1,
+      "edited": true,
+      "rating": 5
     }
   ],
   "answers": [
@@ -95,6 +103,38 @@
       "edited": false,
       "rating": 1,
       "id": 3
+    },
+    {
+      "questionId": 6,
+      "userId": 1,
+      "body": "his answers33",
+      "edited": true,
+      "rating": 8,
+      "id": 5
+    },
+    {
+      "questionId": 6,
+      "userId": 1,
+      "body": "love it",
+      "edited": false,
+      "rating": 1,
+      "id": 6
+    },
+    {
+      "questionId": 2,
+      "userId": 1,
+      "body": "my answ",
+      "edited": false,
+      "rating": 1,
+      "id": 7
+    },
+    {
+      "questionId": 2,
+      "userId": 1,
+      "body": "this is my",
+      "edited": false,
+      "rating": 1,
+      "id": 8
     }
   ]
 }

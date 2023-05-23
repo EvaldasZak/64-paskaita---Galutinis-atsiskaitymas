@@ -9,12 +9,6 @@ import Sort from "../organisms/Sort";
 
 import EditedTag from "../atoms/EditedTag";
 
-const Main = styled.main`
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0;
-`;
-
 const Section = styled.section`
   background-color: #fff;
   padding: 20px;
@@ -118,53 +112,49 @@ const Home = () => {
   });
 
   return (
-    <>
-      <Main>
-        <Section>
-          <H2>Latest Questions</H2>
-          <div>
-            <Sort setSortOrder={setSortOrder} />
-            <div>
-              <Label htmlFor="filter-select">Filter:</Label>
-              <SelectWrapper>
-                <Select
-                  id="filter-select"
-                  value={filterOption}
-                  onChange={(e) => setFilterOption(e.target.value)}
-                >
-                  <option value="all">All</option>
-                  <option value="answered">Answered</option>
-                  <option value="unanswered">Unanswered</option>
-                </Select>
-                <SelectArrow></SelectArrow>
-              </SelectWrapper>
-            </div>
-            {filteredQuestions.map((question) => (
-              <div key={question.id}>
-                <hr />
-                <Question>
-                  <VoteComponent>
-                    <Vote
-                      type="question"
-                      rating={question.rating}
-                      id={question.id}
-                      object={question}
-                    />
-                  </VoteComponent>
-                  <div>
-                    <Link to={`/question/${question.id}`}>
-                      <h3>{question.title}</h3>
-                    </Link>
-                    <p>{question.body}</p>
-                    <EditedTag edited={question.edited} />
-                  </div>
-                </Question>
+    <Section>
+      <H2>Latest Questions</H2>
+      <div>
+        <Sort setSortOrder={setSortOrder} />
+        <div>
+          <Label htmlFor="filter-select">Filter:</Label>
+          <SelectWrapper>
+            <Select
+              id="filter-select"
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="answered">Answered</option>
+              <option value="unanswered">Unanswered</option>
+            </Select>
+            <SelectArrow></SelectArrow>
+          </SelectWrapper>
+        </div>
+        {filteredQuestions.map((question) => (
+          <div key={question.id}>
+            <hr />
+            <Question>
+              <VoteComponent>
+                <Vote
+                  type="question"
+                  rating={question.rating}
+                  id={question.id}
+                  object={question}
+                />
+              </VoteComponent>
+              <div>
+                <Link to={`/question/${question.id}`}>
+                  <h3>{question.title}</h3>
+                </Link>
+                <p>{question.body}</p>
+                <EditedTag edited={question.edited} />
               </div>
-            ))}
+            </Question>
           </div>
-        </Section>
-      </Main>
-    </>
+        ))}
+      </div>
+    </Section>
   );
 };
 
